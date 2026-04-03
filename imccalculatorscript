@@ -1,0 +1,55 @@
+const form = document.getElementById('formImc');
+const inputPeso = document.getElementById('peso');
+const inputAltura = document.getElementById('altura');
+const resultadoDiv = document.getElementById('resultado');
+const classificacaoSpan = document.getElementById('classificacao');
+const imcSpan = document.getElementById('imc');
+const mensagemSpan = document.getElementById('mensagem');
+
+form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    calcularImc();
+});
+
+function calcularImc() {
+    const peso = parseFloat(inputPeso.value);
+    const altura = parseFloat(inputAltura.value);
+
+    if (peso <= 0 || altura <= 0) {
+        alert('Por favor, insira valores válidos!');
+        return;
+    }
+
+    const imc = peso / (altura * altura);
+    const imcArredondado = imc.toFixed(2);
+
+    let classificacao = '';
+    let classe = '';
+    let mensagem = '';
+
+    if (imc < 18.5) {
+        classificacao = 'Abaixo do peso';
+        classe = 'magro';
+        mensagem = 'Você está abaixo do peso ideal. Consulte um médico.';
+    } else if (imc >= 18.5 && imc < 25) {
+        classificacao = 'Peso normal';
+        classe = 'normal';
+        mensagem = 'Você está com o peso ideal. Parabéns!';
+    } else if (imc >= 25 && imc < 30) {
+        classificacao = 'Sobrepeso';
+        classe = 'sobrepeso';
+        mensagem = 'Você está com sobrepeso. Considere praticar exercícios.';
+    } else {
+        classificacao = 'Obeso';
+        classe = 'obeso';
+        mensagem = 'Você está obeso. Consulte um profissional de saúde.';
+    }
+
+    // Atualizar resultado
+    classificacaoSpan.textContent = classificacao;
+    imcSpan.textContent = imcArredondado;
+    mensagemSpan.textContent = mensagem;
+
+    // Remover classes anteriores e adicionar a nova
+    resultadoDiv.className = 'resultado ativo ' + classe;
+}
